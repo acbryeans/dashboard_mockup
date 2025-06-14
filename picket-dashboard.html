@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picket - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafbfc;
+            color: #374151;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: #7c3aed;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .filters {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-item select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .nav-tabs {
+            background: white;
+            padding: 0 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-tab {
+            padding: 16px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-tab.active {
+            color: #7c3aed;
+            border-bottom-color: #7c3aed;
+        }
+
+        .nav-tab:hover {
+            color: #7c3aed;
+        }
+
+        .main-content {
+            padding: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-left: auto;
+        }
+
+        /* Pipeline Styles */
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .pipeline-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .pipeline-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .pipeline-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .pipeline-card.selected {
+            border-color: #7c3aed;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .stage-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .stage-name {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .stage-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .metrics-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #f9fafb;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status.under-contract {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status.viewed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status.modeled {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .status.saved {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .price {
+            font-weight: 600;
+        }
+
+        .kpi-section {
+            display: none;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .kpi-header {
+            margin-bottom: 16px;
+        }
+
+        .kpi-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .kpi-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            border-color: #9ca3af;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .kpi-change.positive {
+            color: #059669;
+        }
+
+        .kpi-change.negative {
+            color: #dc2626;
+        }
+
+        .kpi-change.neutral {
+            color: #6b7280;
+        }
+
+        /* Market (Inventory) Styles */
+        .strategy-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .section-meta {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .strategy-overview {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .opportunity-count {
+            text-align: center;
+        }
+
+        .count-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .count-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .count-change {
+            font-size: 12px;
+            color: #16a34a;
+            margin-top: 4px;
+        }
+
+        .funnel-breakdown {
+            flex: 1;
+        }
+
+        .funnel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+        }
+
+        .funnel-stages {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .funnel-stage {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .funnel-stage:hover .funnel-stage-card {
+            border-color: #4f46e5;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+        }
+
+        .funnel-stage-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 100px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .funnel-stage-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .funnel-stage-label {
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .funnel-arrow {
+            color: #9ca3af;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 80px;
+            padding: 0 8px;
+        }
+
+        .arrow-symbol {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .arrow-criteria {
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+            max-width: 80px;
+        }
+
+        .key-stats {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: right;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .metric-card:hover {
+            border-color: #9ca3af;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card.selected {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 1px #4f46e5;
+            background: #f8faff;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .metric-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .metric-scope {
+            font-size: 11px;
+            color: #9ca3af;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .metric-change.positive {
+            color: #16a34a;
+        }
+
+        .metric-change.negative {
+            color: #dc2626;
+        }
+
+        .metric-change.neutral {
+            color: #6b7280;
+        }
+
+        .analysis-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .chart-header {
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .chart-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .insights-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .insight-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .insight-description {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .market-context {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 24px;
+        }
+
+        .context-metric {
+            text-align: center;
+        }
+
+        .context-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .context-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .context-change {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .action-bar {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+            border: 1px solid #4f46e5;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            border-color: #9ca3af;
+            background: #f9fafb;
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: absolute;
+            background: #1f2937;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.4;
+            max-width: 280px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #1f2937;
+        }
+
+        .has-tooltip {
+            border-bottom: 1px dotted #9ca3af;
+            cursor: help;
+            transition: border-color 0.2s ease;
+        }
+
+        .has-tooltip:hover {
+            border-bottom-color: #4f46e5;
+        }
+
+        /* Placeholder content styles */
+        .placeholder-content {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 64px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .placeholder-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .placeholder-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">P</div>
+            picket
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+        <div class="user-info">
+            <span>💬</span>
+            <span>🔔</span>
+            <span>AB</span>
+        </div>
+    </div>
+
+    <div class="filters">
+        <div class="filter-item">
+            <span>Markets:</span>
+            <select>
+                <option>All</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <span>Data source:</span>
+            <select>
+                <option>All</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <span>Analyst:</span>
+            <select>
+                <option>All</option>
+            </select>
+        </div>
+        <div class="month-nav">
+            June 2025 ← → W M
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <a href="#" class="nav-tab" data-tab="overview">Overview</a>
+        <a href="#" class="nav-tab active" data-tab="market">Market</a>
+        <a href="#" class="nav-tab" data-tab="pipeline">Pipeline</a>
+        <a href="#" class="nav-tab" data-tab="portfolio">Portfolio</a>
+    </div>
+
+    <div class="main-content">
+        <!-- Overview Tab (Placeholder) -->
+        <div class="tab-content" id="overview">
+            <div class="placeholder-content">
+                <h1 class="placeholder-title">Overview Dashboard</h1>
+                <p class="placeholder-subtitle">Coming soon - High-level portfolio performance and key metrics</p>
+            </div>
+        </div>
+
+        <!-- Market Tab (Inventory Content) -->
+        <div class="tab-content active" id="market">
+            <!-- Strategy Performance Section -->
+            <div class="strategy-section">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="has-tooltip" data-tooltip="strategy-performance-title">Opportunities</span></h2>
+                    <div class="section-meta"><span class="has-tooltip" data-tooltip="strategy-performance-meta">Conservative SFR • Nashville MSA</span></div>
+                </div>
+                <div class="strategy-overview">
+                    <div class="opportunity-count">
+                        <div class="count-number"><span class="has-tooltip" data-tooltip="available-properties-count">485</span></div>
+                        <div class="count-label"><span class="has-tooltip" data-tooltip="available-properties-label">Available Properties</span></div>
+                        <div class="count-change"><span class="has-tooltip" data-tooltip="available-properties-change">+12 today</span></div>
+                    </div>
+                    
+                    <div class="funnel-breakdown">
+                        <div class="funnel-title"><span class="has-tooltip" data-tooltip="strategy-filter-title">Strategy Filter Performance</span></div>
+                        <div class="funnel-stages">
+                            <div class="funnel-stage">
+                                <div class="funnel-stage-card">
+                                    <div class="funnel-stage-number"><span class="has-tooltip" data-tooltip="total-market">12,646</span></div>
+                                    <div class="funnel-stage-label">Total Market</div>
+                                </div>
+                            </div>
+                            <div class="funnel-arrow">
+                                <div class="arrow-symbol">→</div>
+                                <div class="arrow-criteria" data-tooltip="property-criteria">Property Filters</div>
+                            </div>
+                            <div class="funnel-stage">
+                                <div class="funnel-stage-card">
+                                    <div class="funnel-stage-number"><span class="has-tooltip" data-tooltip="property-filtered">9,240</span></div>
+                                </div>
+                            </div>
+                            <div class="funnel-arrow">
+                                <div class="arrow-symbol">→</div>
+                                <div class="arrow-criteria" data-tooltip="location-criteria">Location Filters</div>
+                            </div>
+                            <div class="funnel-stage">
+                                <div class="funnel-stage-card">
+                                    <div class="funnel-stage-number"><span class="has-tooltip" data-tooltip="location-filtered">4,825</span></div>
+                                </div>
+                            </div>
+                            <div class="funnel-arrow">
+                                <div class="arrow-symbol">→</div>
+                                <div class="arrow-criteria" data-tooltip="financial-criteria">Financial Filters</div>
+                            </div>
+                            <div class="funnel-stage">
+                                <div class="funnel-stage-card">
+                                    <div class="funnel-stage-number"><span class="has-tooltip" data-tooltip="financial-filtered">485</span></div>
+                                    <div class="funnel-stage-label">Final</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="key-stats">
+                        <div class="stat-item">
+                            <div class="stat-value"><span class="has-tooltip" data-tooltip="new-this-week-value">32</span></div>
+                            <div class="stat-label"><span class="has-tooltip" data-tooltip="new-this-week-label">New this week</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"><span class="has-tooltip" data-tooltip="geographic-spread-value">3 zip codes</span></div>
+                            <div class="stat-label"><span class="has-tooltip" data-tooltip="geographic-spread-label">Hold 67% of opportunities</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"><span class="has-tooltip" data-tooltip="time-to-contract-value">14 days</span></div>
+                            <div class="stat-label"><span class="has-tooltip" data-tooltip="time-to-contract-label">Avg time to contract</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategy Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card selected" data-metric="price">
+                    <div class="metric-header">
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="median-price-title">Median List Price</span></div>
+                        <div class="metric-scope"><span class="has-tooltip" data-tooltip="median-price-scope">Strategy properties</span></div>
+                    </div>
+                    <div class="metric-value"><span class="has-tooltip" data-tooltip="median-price-value">$342k</span></div>
+                    <div class="metric-change positive"><span class="has-tooltip" data-tooltip="median-price-change">+2.5% vs last month</span></div>
+                </div>
+                <div class="metric-card" data-metric="pricetorent">
+                    <div class="metric-header">
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="price-to-rent-title">Price-to-Rent Ratio</span></div>
+                        <div class="metric-scope"><span class="has-tooltip" data-tooltip="price-to-rent-scope">Strategy properties</span></div>
+                    </div>
+                    <div class="metric-value"><span class="has-tooltip" data-tooltip="price-to-rent-value">142x</span></div>
+                    <div class="metric-change negative"><span class="has-tooltip" data-tooltip="price-to-rent-change">+3x vs optimal range</span></div>
+                </div>
+                <div class="metric-card" data-metric="dom">
+                    <div class="metric-header">
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="days-market-title">Median Days on Market</span></div>
+                        <div class="metric-scope"><span class="has-tooltip" data-tooltip="days-market-scope">Strategy properties</span></div>
+                    </div>
+                    <div class="metric-value"><span class="has-tooltip" data-tooltip="days-market-value">14 days</span></div>
+                    <div class="metric-change positive"><span class="has-tooltip" data-tooltip="days-market-change">-3 days vs market avg</span></div>
+                </div>
+                <div class="metric-card" data-metric="offerlist">
+                    <div class="metric-header">
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="offer-list-title">Avg Offer-to-List</span></div>
+                        <div class="metric-scope"><span class="has-tooltip" data-tooltip="offer-list-scope">Strategy properties</span></div>
+                    </div>
+                    <div class="metric-value"><span class="has-tooltip" data-tooltip="offer-list-value">97.2%</span></div>
+                    <div class="metric-change positive"><span class="has-tooltip" data-tooltip="offer-list-change">+1.1% vs market avg</span></div>
+                </div>
+            </div>
+
+            <!-- Analysis Section -->
+            <div class="analysis-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title" id="chartTitle"><span class="has-tooltip" data-tooltip="chart-title">New Qualified Listings per Week</span></div>
+                        <div class="chart-subtitle" id="chartSubtitle"><span class="has-tooltip" data-tooltip="chart-subtitle">Weekly flow of properties meeting strategy criteria</span></div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="opportunityTrend"></canvas>
+                    </div>
+                </div>
+
+                <div class="insights-panel">
+                    <div class="section-header" style="padding: 0 0 16px 0;">
+                        <h3 class="section-title" style="font-size: 16px;"><span class="has-tooltip" data-tooltip="AI-generated insights based on current market data patterns, trend analysis, and strategy performance metrics.">Key Insights</span></h3>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><span class="has-tooltip" data-tooltip="geographic-concentration-title">Geographic Concentration Risk</span></div>
+                        <div class="insight-description"><span class="has-tooltip" data-tooltip="geographic-concentration-desc">67% of opportunities clustered in 3 zip codes (37013, 37064, 37135). Consider expanding location criteria for better diversification.</span></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><span class="has-tooltip" data-tooltip="Competitive market indicator: 14 days to contract for strategy properties vs 18 days market average. Suggests high demand in your target segment.">Fast Market Movement</span></div>
+                        <div class="insight-description"><span class="has-tooltip" data-tooltip="Actionable insight: Faster contract times require immediate response capability. Consider pre-approved financing and ready offer templates to compete effectively.">Properties in your criteria averaging 4 days faster to contract than market average. Set up immediate alerts.</span></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><span class="has-tooltip" data-tooltip="filter-bottleneck-title">Filter Bottleneck</span></div>
+                        <div class="insight-description"><span class="has-tooltip" data-tooltip="filter-bottleneck-desc">Financial filters eliminate 90% of otherwise acceptable properties. Raising price ceiling to $375k would add 127 more opportunities (+26%).</span></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><span class="has-tooltip" data-tooltip="supply-acceleration-title">Supply Acceleration</span></div>
+                        <div class="insight-description"><span class="has-tooltip" data-tooltip="supply-acceleration-desc">32 new qualified properties this week vs 19 last week (+68%). Market timing favorable for increased acquisition activity.</span></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><span class="has-tooltip" data-tooltip="rental-yield-title">Rental Yield Opportunities</span></div>
+                        <div class="insight-description"><span class="has-tooltip" data-tooltip="rental-yield-desc">23 properties priced 15%+ below optimal price-to-rent ratio - potential value plays for immediate cash flow.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Context -->
+            <div class="market-context">
+                <div class="section-header" style="padding: 0 0 20px 0;">
+                    <h3 class="section-title"><span class="has-tooltip" data-tooltip="Broader Nashville MSA real estate market indicators providing context for strategy performance. Includes all property types and price ranges.">Nashville MSA Market Context</span></h3>
+                    <div class="section-meta"><span class="has-tooltip" data-tooltip="Market-wide statistics for benchmarking strategy performance. Helps identify if strategy outperformance is due to selection criteria or overall market conditions.">Overall market indicators for reference</span></div>
+                </div>
+                <div class="context-grid">
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="Middle price when all Nashville MSA home sales are sorted by price. Includes condos, townhomes, and all single-family homes regardless of investment viability.">$485k</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Benchmark for overall market pricing trends. Strategy median of $342k shows focus on lower-priced segment suitable for rental investment.">Market Median Price</span></div>
+                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Overall market price appreciation of 4.1% month-over-month. Higher than strategy appreciation (2.5%), suggesting strategy properties lag broader market pricing.">+4.1% MoM</span></div>
+                    </div>
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="Median days from listing to contract for all Nashville MSA properties. Strategy properties average 14 days, showing 4-day competitive advantage.">18 days</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Market competitiveness indicator. Lower numbers indicate strong demand. Compare to strategy performance to gauge competitive positioning.">Market Median DOM</span></div>
+                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Market-wide improvement of 3 days faster sales month-over-month. Indicates strengthening demand conditions across all segments.">-3 days MoM</span></div>
+                    </div>
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="How many months it would take to sell all current inventory at current absorption rate. Formula: Current Inventory ÷ (Sales Volume ÷ 30 days).">2.3</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Supply-demand balance indicator. Under 3 months typically indicates seller's market. Under 2 months suggests very tight supply conditions.">Months Supply</span></div>
+                        <div class="context-change negative"><span class="has-tooltip" data-tooltip="Supply tightening by 0.4 months indicates accelerating market conditions. Lower supply generally supports price appreciation and faster sales.">-0.4 MoM</span></div>
+                    </div>
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of listed properties that go under contract each month. High absorption rates indicate strong buyer demand relative to available inventory.">67%</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Demand strength metric. Above 60% typically indicates strong market conditions. Formula: Properties Under Contract ÷ Active Listings.">Absorption Rate</span></div>
+                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Absorption rate up 8 percentage points month-over-month. Indicates strengthening buyer demand and suggests continued price pressure.">+8% MoM</span></div>
+                    </div>
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="New properties listed for sale today across Nashville MSA. Daily volume indicator for market supply replenishment rate.">156</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Daily supply indicator. Higher than average suggests inventory replenishment, though must be viewed relative to absorption rate for market balance.">New Listings Today</span></div>
+                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="23% above daily average indicates strong supply flow. Positive for buyers as more inventory choices, but absorption rate determines market impact.">+23% vs avg</span></div>
+                    </div>
+                    <div class="context-metric">
+                        <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of active listings that have reduced price from original asking price. Higher percentages indicate seller pricing pressure or weakening demand.">12%</span></div>
+                        <div class="context-label"><span class="has-tooltip" data-tooltip="Seller pricing pressure indicator. Under 15% typically indicates strong market. Above 25% suggests buyers have more negotiating power.">Price Reductions</span></div>
+                        <div class="context-change neutral"><span class="has-tooltip" data-tooltip="Stable price reduction rate suggests consistent market conditions. No increase indicates continued seller pricing power despite supply increase.">No change MoM</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="action-title"><span class="has-tooltip" data-tooltip="Direct access to detailed property listings, strategy analysis tools, and data export functions for the current set of qualifying investment opportunities.">View and analyze your 485 available properties</span></div>
+                <div class="action-buttons">
+                    <a href="#" class="btn btn-primary"><span class="has-tooltip" data-tooltip="Navigate to detailed property list with filtering, sorting, and individual property analysis tools. Includes photos, financials, and neighborhood data.">View Properties</span></a>
+                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Interactive tool to model how changes to strategy criteria (price range, cap rate minimums, location constraints) would affect available property count and metrics.">Strategy What-If</span></a>
+                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Download current property data, market metrics, and strategy performance in CSV or Excel format for external analysis or reporting.">Export Data</span></a>
+                </div>
+            </div>
+
+            <!-- Methodology Section -->
+            <div class="market-context" style="margin-top: 32px;">
+                <div class="section-header" style="padding: 0 0 20px 0;">
+                    <h3 class="section-title"><span class="has-tooltip" data-tooltip="Detailed explanation of data sources, calculation methods, and analytical frameworks used in market analysis and strategy evaluation.">Analysis Methodology</span></h3>
+                    <div class="section-meta"><span class="has-tooltip" data-tooltip="Understanding calculation methods and data sources helps interpret results and make informed investment decisions.">Data sources, calculations, and analytical approaches</span></div>
+                </div>
+                <div style="padding: 24px; font-size: 14px; line-height: 1.6; color: #374151;">
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Strategy Filter Process</h4>
+                        <p style="margin-bottom: 12px;">Properties are filtered through three sequential stages: <strong>Property Filters</strong> (type, condition, size), <strong>Location Filters</strong> (geography, schools, neighborhoods), and <strong>Financial Filters</strong> (profitability thresholds).</p>
+                        <p>Current funnel shows 3.8% overall selectivity, with financial criteria being the most restrictive stage.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Key Financial Metrics</h4>
+                        <p style="margin-bottom: 12px;"><strong>Cap Rate</strong> = (Annual Rental Income - Operating Expenses) ÷ Purchase Price. Primary measure of investment profitability.</p>
+                        <p><strong>Days on Market</strong> and <strong>Offer-to-List Ratio</strong> indicate market competitiveness and pricing power.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Data Sources</h4>
+                        <p>Real-time MLS data, rental market APIs, and public data sources. Analysis updated continuously during market hours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pipeline Tab -->
+        <div class="tab-content" id="pipeline">
+            <div class="page-header">
+                <h1 class="page-title">Acquisitions Pipeline</h1>
+                <p class="page-subtitle">Track property analysis, offers, and transactions from initial review to closing</p>
+            </div>
+            
+            <div class="pipeline-overview">
+                <div class="pipeline-card" data-category="underwriting">
+                    <div class="card-header">
+                        <h2 class="card-title has-tooltip" data-tooltip="Property analysis stage. Properties can be in multiple stages simultaneously (e.g., a property that's Tagged is also Viewed, Modeled, and Saved). Click card to filter table.">Underwriting</h2>
+                    </div>
+                    <div class="stage-list">
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Total properties opened and reviewed by analysts. Starting point for all analysis activity.">Viewed</span>
+                            <span class="stage-count">155</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties with completed financial models (cap rate, cash flow, ROI calculations). All modeled properties are also viewed.">Modeled</span>
+                            <span class="stage-count">83</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties marked as good potential investments. All saved properties are also viewed and modeled.">Saved</span>
+                            <span class="stage-count">35</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties flagged for immediate action (make offer, request info, etc). All tagged properties are also viewed, modeled, and saved.">Tagged</span>
+                            <span class="stage-count">15</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties removed from consideration or marked unsuitable for investment.">Hidden</span>
+                            <span class="stage-count">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pipeline-card" data-category="offers">
+                    <div class="card-header">
+                        <h2 class="card-title has-tooltip" data-tooltip="Offers to sellers. Counts based on when events actually happened (submission date, acceptance date, etc). A single offer appears in different months as it progresses. Click to filter.">Offers</h2>
+                    </div>
+                    <div class="stage-list">
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Total offers submitted to sellers in current time period. Based on submission date.">Submitted</span>
+                            <span class="stage-count">19</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Offers currently awaiting seller response, regardless of when originally submitted. May include offers from previous periods.">Awaiting Response</span>
+                            <span class="stage-count">14</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Offers accepted in current time period. May include offers originally submitted in previous periods. Numbers don't add up to 'Submitted' due to cross-period timing.">Accepted</span>
+                            <span class="stage-count">2</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Offers rejected in current time period. May include offers originally submitted in previous periods. Numbers don't add up to 'Submitted' due to cross-period timing.">Rejected</span>
+                            <span class="stage-count">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pipeline-card" data-category="transactions">
+                    <div class="card-header">
+                        <h2 class="card-title has-tooltip" data-tooltip="Properties in closing process. Counts based on when events actually happened (contract date, closing date, etc). A property can appear in different months as it progresses. Click to filter.">Transactions</h2>
+                    </div>
+                    <div class="stage-list">
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties with signed purchase contracts in closing process. Count shows contracts signed in current time period.">Under Contract</span>
+                            <span class="stage-count">2</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Properties successfully closed and purchased. Count shows closings that occurred in current time period.">Closed</span>
+                            <span class="stage-count">0</span>
+                        </div>
+                        <div class="stage-item">
+                            <span class="stage-name has-tooltip" data-tooltip="Transactions that fell through during closing process. Count shows failures that occurred in current time period.">Failed</span>
+                            <span class="stage-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic KPI Section -->
+            <div class="kpi-section" id="underwritingKpis">
+                <div class="kpi-header">
+                    <h3 class="kpi-title">Underwriting Performance</h3>
+                    <p class="kpi-subtitle">Key metrics for property analysis and evaluation</p>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">4.2 days</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average time from when a property is first viewed to when a financial model is completed.">Avg Time to Model</div>
+                        <div class="kpi-change positive">-1.3 days vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">$342k</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average listing price of properties currently in the underwriting pipeline.">Avg Property Value</div>
+                        <div class="kpi-change positive">+2.8% vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">5.84%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average capitalization rate (annual rental income ÷ property price). Key profitability metric.">Avg Cap Rate</div>
+                        <div class="kpi-change negative">-0.15% vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">54%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="viewed-modeled-rate">Viewed → Modeled Rate</div>
+                        <div class="kpi-change negative">-12% vs target</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kpi-section" id="offersKpis">
+                <div class="kpi-header">
+                    <h3 class="kpi-title">Offers Performance</h3>
+                    <p class="kpi-subtitle">Key metrics for offer strategy and success rates • Note: Counts track when events occurred, not offer lifecycle</p>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">19</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Total purchase offers submitted to sellers during current month. Based on submission date.">Offers Submitted This Month</div>
+                        <div class="kpi-change negative">-8% vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">96.2%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average percentage of listing price offered. 96.2% means offers average 96.2% of asking price.">Avg Offer-to-List Ratio</div>
+                        <div class="kpi-change positive">+1.1% vs market avg</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">6.5 days</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average time sellers take to respond to offers (accept, reject, or counter).">Avg Response Time</div>
+                        <div class="kpi-change positive">-2.1 days vs market avg</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">8.3%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Percentage of offers accepted so far this month. Excludes still-pending offers.">Month-to-Date Acceptance Rate</div>
+                        <div class="kpi-change negative">-2.1% vs last month</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kpi-section" id="transactionsKpis">
+                <div class="kpi-header">
+                    <h3 class="kpi-title">Transactions Performance</h3>
+                    <p class="kpi-subtitle">Key metrics for closing success and timeline • Note: Counts track when events occurred, not transaction lifecycle</p>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">2</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Property purchases that successfully closed during current month. Based on actual closing date.">Properties Closed This Month</div>
+                        <div class="kpi-change positive">+100% vs last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">28 days</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average time from contract signing to closing completion.">Avg Days to Close</div>
+                        <div class="kpi-change positive">-5 days vs market avg</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">$2.1k</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average closing costs per transaction (title, attorney fees, inspections, etc). Excludes purchase price.">Avg Closing Costs</div>
+                        <div class="kpi-change neutral">Within budget</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">0</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Transactions that failed to close after going under contract due to inspections, financing, etc.">Fall-throughs This Month</div>
+                        <div class="kpi-change positive">0 vs 2 last month</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline Insights -->
+            <div class="insights-panel" style="margin-bottom: 24px;">
+                <div class="section-header" style="padding: 0 0 16px 0;">
+                    <h3 class="section-title" style="font-size: 16px;"><span class="has-tooltip" data-tooltip="pipeline-insights-title">Pipeline Insights</span></h3>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-title"><span class="has-tooltip" data-tooltip="pipeline-bottleneck-title">Pipeline Bottleneck</span></div>
+                    <div class="insight-description"><span class="has-tooltip" data-tooltip="pipeline-bottleneck-desc">Biggest conversion drop is Viewed→Modeled (46% fall-off). Consider auto-screening criteria or modeling queue optimization.</span></div>
+                </div>
+            </div>
+
+            <div class="metrics-table">
+                <div class="table-header">
+                    <h3 class="table-title">Pipeline Metrics Summary</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="has-tooltip" data-tooltip="Stage name in the pipeline process">Stage</th>
+                            <th class="has-tooltip" data-tooltip="Count of properties in this stage during the selected time period. For event-based stages (offers/transactions), this represents when the event occurred.">Total</th>
+                            <th class="has-tooltip" data-tooltip="Average listing price of properties in this stage">Avg. List Price</th>
+                            <th class="has-tooltip" data-tooltip="Average capitalization rate (annual rental income ÷ property price) for properties in this stage">Avg. Cap Rate</th>
+                            <th class="has-tooltip" data-tooltip="Average number of bedrooms for properties in this stage">Avg. Beds</th>
+                            <th class="has-tooltip" data-tooltip="Average number of bathrooms for properties in this stage">Avg. Baths</th>
+                            <th class="has-tooltip" data-tooltip="Average year built for properties in this stage">Avg. Year Built</th>
+                            <th class="has-tooltip" data-tooltip="Average square footage for properties in this stage">Avg. SqFt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="metricsTableBody">
+                        <tr data-category="underwriting" data-subcategory="viewed">
+                            <td>Viewed</td>
+                            <td>155</td>
+                            <td class="price">$324,285</td>
+                            <td>5.59%</td>
+                            <td>3.6</td>
+                            <td>2.4</td>
+                            <td>2007</td>
+                            <td>1,960</td>
+                        </tr>
+                        <tr data-category="underwriting" data-subcategory="modeled">
+                            <td>Modeled</td>
+                            <td>83</td>
+                            <td class="price">$345,290</td>
+                            <td>5.84%</td>
+                            <td>4.0</td>
+                            <td>2.6</td>
+                            <td>2007</td>
+                            <td>2,052</td>
+                        </tr>
+                        <tr data-category="underwriting" data-subcategory="saved">
+                            <td>Saved</td>
+                            <td>35</td>
+                            <td class="price">$323,315</td>
+                            <td>6.27%</td>
+                            <td>4.1</td>
+                            <td>2.5</td>
+                            <td>2016</td>
+                            <td>2,099</td>
+                        </tr>
+                        <tr data-category="underwriting" data-subcategory="tagged">
+                            <td>Tagged</td>
+                            <td>15</td>
+                            <td class="price">$311,200</td>
+                            <td>5.95%</td>
+                            <td>3.7</td>
+                            <td>2.4</td>
+                            <td>2012</td>
+                            <td>1,890</td>
+                        </tr>
+                        <tr data-category="underwriting" data-subcategory="hidden">
+                            <td>Hidden</td>
+                            <td>1</td>
+                            <td class="price">$275,000</td>
+                            <td>5.95%</td>
+                            <td>3.0</td>
+                            <td>2.0</td>
+                            <td>2015</td>
+                            <td>1,650</td>
+                        </tr>
+                        <tr data-category="offers" data-subcategory="submitted">
+                            <td>Submitted</td>
+                            <td>19</td>
+                            <td class="price">$252,888</td>
+                            <td>6.23%</td>
+                            <td>3.2</td>
+                            <td>2.1</td>
+                            <td>1984</td>
+                            <td>1,865</td>
+                        </tr>
+                        <tr data-category="offers" data-subcategory="awaiting">
+                            <td>Awaiting Response</td>
+                            <td>14</td>
+                            <td class="price">$248,750</td>
+                            <td>6.18%</td>
+                            <td>3.1</td>
+                            <td>2.0</td>
+                            <td>1985</td>
+                            <td>1,840</td>
+                        </tr>
+                        <tr data-category="offers" data-subcategory="accepted">
+                            <td>Accepted</td>
+                            <td>2</td>
+                            <td class="price">$153,872</td>
+                            <td>6.99%</td>
+                            <td>2.5</td>
+                            <td>1.5</td>
+                            <td>1962</td>
+                            <td>1,377</td>
+                        </tr>
+                        <tr data-category="offers" data-subcategory="rejected">
+                            <td>Rejected</td>
+                            <td>3</td>
+                            <td class="price">$198,500</td>
+                            <td>5.85%</td>
+                            <td>2.7</td>
+                            <td>1.7</td>
+                            <td>1975</td>
+                            <td>1,425</td>
+                        </tr>
+                        <tr data-category="transactions" data-subcategory="under-contract">
+                            <td>Under Contract</td>
+                            <td>2</td>
+                            <td class="price">$153,872</td>
+                            <td>6.99%</td>
+                            <td>2.5</td>
+                            <td>1.5</td>
+                            <td>1962</td>
+                            <td>1,377</td>
+                        </tr>
+                        <tr data-category="transactions" data-subcategory="closed">
+                            <td>Closed</td>
+                            <td>0</td>
+                            <td class="price">—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                        <tr data-category="transactions" data-subcategory="failed">
+                            <td>Failed</td>
+                            <td>0</td>
+                            <td class="price">—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Portfolio Tab (Placeholder) -->
+        <div class="tab-content" id="portfolio">
+            <div class="placeholder-content">
+                <h1 class="placeholder-title">Portfolio Dashboard</h1>
+                <p class="placeholder-subtitle">Coming soon - Owned property performance, cash flow tracking, and portfolio analytics</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tooltip Dictionary - Edit tooltip text and toggle active/inactive here
+        const tooltips = {
+            // Opportunities Section
+            'strategy-performance-title': {
+                active: false,
+                text: 'Current investment opportunities identified by your strategy filters and market criteria.'
+            },
+            'strategy-performance-meta': {
+                active: false,
+                text: 'Strategy: Single-family rental properties with conservative risk profile. Market: Nashville Metropolitan Statistical Area including Davidson, Williamson, Wilson, Rutherford, Sumner, and Cheatham counties.'
+            },
+            'available-properties-count': {
+                active: false,
+                text: 'Current count of properties that pass all strategy filters and are available for investment. Updated in real-time as new listings appear and properties go under contract.'
+            },
+            'available-properties-label': {
+                active: false,
+                text: 'Properties currently on market that meet all investment criteria: property type, location, financial thresholds, and risk parameters.'
+            },
+            'available-properties-change': {
+                active: false,
+                text: 'Net change in available properties since yesterday. Factors in new listings that pass filters minus properties that went under contract or were delisted.'
+            },
+            
+            // Strategy Filter Performance  
+            'strategy-filter-title': {
+                active: false,
+                text: 'Sequential filtering process showing how strategy criteria progressively narrow the total market to investment opportunities.'
+            },
+            'total-market': {
+                active: false,
+                text: 'Total active single-family home listings in Nashville MSA. Includes all property types, conditions, and price ranges currently for sale.'
+            },
+            'property-criteria': {
+                active: true,
+                text: 'Property criteria:\n• Bedrooms\n• Bathrooms\n• Garages\n• Square footage (Sq Ft)\n• Lot size\n• Year built\n• Property type'
+            },
+            'property-filtered': {
+                active: false,
+                text: 'Properties remaining after property criteria filter. 73% of market passes basic property requirements (12,646 → 9,240 = 27% elimination rate).'
+            },
+            'location-criteria': {
+                active: true,
+                text: 'Location criteria:\n• Safety\n• Walkability\n• School\n• Income\n• Income growth\n• Population density\n• Population growth\n• Flood risk'
+            },
+            'location-filtered': {
+                active: false,
+                text: 'Properties in acceptable locations. 48% elimination rate at this stage (9,240 → 4,825), indicating location is a major constraint for this strategy.'
+            },
+            'financial-criteria': {
+                active: true,
+                text: 'Financial criteria:\n• Price\n• Cap rate\n• Cash on cash\n• Gross yield\n• Unlevered IRR\n• Levered IRR'
+            },
+            'financial-filtered': {
+                active: false2,
+                text: 'Final investment opportunities. 90% elimination rate at financial stage (4,825 → 485), showing financial criteria are the most restrictive filter.'
+            },
+            
+            // Key Stats
+            'new-this-week-value': { active: false, text: 'New listings that passed all strategy filters in the past 7 days. Indicates market velocity and opportunity flow rate.' },
+            'new-this-week-label': { active: false, text: 'Weekly pace of new investment opportunities. Higher numbers indicate more choices but potentially more competition.' },
+            'geographic-spread-value': { active: false, text: 'Concentration risk metric. High concentration in few zip codes increases portfolio risk.' },
+            'geographic-spread-label': { active: false, text: 'Geographic concentration indicator showing how many zip codes contain the majority of available opportunities.' },
+            'time-to-contract-value': { active: false, text: 'Average time from listing date to accepted offer for properties in your strategy. Faster contracts indicate high competition or underpriced properties.' },
+            'time-to-contract-label': { active: false, text: 'Market competitiveness indicator. Shorter timeframes require faster decision-making and may limit due diligence time.' },
+            
+            // Strategy Metrics
+            'median-price-title': { active: false, text: 'Median asking price for properties that pass all strategy filters. Calculated as the middle value when all 485 properties are sorted by list price.' },
+            'median-price-scope': { active: false, text: 'Metric calculated only for the 485 properties that pass all investment criteria, not the broader market.' },
+            'median-price-value': { active: false, text: 'Half of strategy properties are priced below $342k, half above. Median is less affected by outliers than average price.' },
+            'median-price-change': { active: false, text: 'Monthly price appreciation of 2.5% indicates strong market momentum. Calculate as (Current Month Median - Previous Month Median) ÷ Previous Month Median.' },
+            
+            'cap-rate-title': { active: true, text: 'Median capitalization rate across strategy properties. Cap rate = (Annual Rental Income - Operating Expenses) ÷ Purchase Price. Key profitability metric for rental properties.' },
+            'cap-rate-scope': { active: false, text: 'Based on estimated rental income and expenses for the 485 strategy properties. Uses local rent comparables and standard expense ratios.' },
+            'cap-rate-value': { active: false, text: 'Middle cap rate when all strategy properties sorted by yield. 5.69% means property generates 5.69% annual return relative to purchase price.' },
+            'cap-rate-change': { active: false, text: 'Yield compression of 0.12 percentage points. Typically caused by prices rising faster than rents, reducing profitability of new purchases.' },
+            
+            'days-market-title': { active: false, text: 'Median time properties have been actively listed before going under contract. Key indicator of market competition and demand strength.' },
+            'days-market-scope': { active: false, text: 'Calculated for strategy properties that went under contract in the current period. Excludes properties still actively listed.' },
+            'days-market-value': { active: false, text: 'Half of strategy properties that went under contract did so in 14 days or fewer. Faster sales indicate high competition or attractive pricing.' },
+            'days-market-change': { active: false, text: 'Strategy properties sell 3 days faster than overall market median. Indicates either higher quality properties or more competitive pricing in your target criteria.' },
+            
+            'price-to-rent-title': { active: false, text: 'Monthly rent needed to buy each property. Lower ratios indicate better rental yields. Optimal range for SFR: 120-140x.' },
+            'price-to-rent-scope': { active: false, text: 'Based on estimated rental income for the 485 strategy properties. Uses local rent comparables and market data.' },
+            'price-to-rent-value': { active: false, text: 'Median ratio of purchase price to monthly rent across all strategy properties. 142x means it takes 142 months of rent to equal purchase price.' },
+            'price-to-rent-change': { active: false, text: 'Current ratio is 3x above optimal range of 120-140x, indicating lower rental yields than ideal for cash flow investment.' },
+            
+            'offer-list-title': { active: false, text: 'Average ratio of accepted offer price to original listing price for strategy properties. Higher ratios indicate strong seller pricing power.' },
+            'offer-list-scope': { active: false, text: 'Based on closed transactions of strategy properties in current period. Calculated as Accepted Offer ÷ Original List Price.' },
+            'offer-list-value': { active: false, text: 'On average, accepted offers are 97.2% of asking price. Values above 95% typically indicate a strong seller\'s market with high competition.' },
+            'offer-list-change': { active: false, text: 'Strategy properties command 1.1% higher offer ratios than market average. May indicate higher quality properties or more motivated buyers in your target segment.' },
+            
+            // Analysis Section
+            'chart-title': { active: false, text: 'Weekly count of new properties that meet all strategy criteria. Shows supply velocity and market timing patterns.' },
+            'chart-subtitle': { active: false, text: 'Each data point represents weekly new listings passing all filters. Upward trend indicates accelerating supply flow and favorable market timing.' },
+            'insights-title': { active: false, text: 'AI-generated insights based on current market data patterns, trend analysis, and strategy performance metrics.' },
+            
+            // Key Insights
+            'supply-tightening-title': { active: false, text: 'Location constraints are the second-largest filter elimination factor. Analysis: 9,240 → 4,825 properties (47.8% elimination rate).' },
+            'supply-tightening-desc': { active: false, text: 'Recommendation based on filter analysis showing location criteria eliminating nearly half of qualifying properties. Adjacent zip codes may offer similar characteristics with expanded supply.' },
+            'fast-movement-title': { active: false, text: 'Competitive market indicator: 14 days to contract for strategy properties vs 18 days market average. Suggests high demand in your target segment.' },
+            'fast-movement-desc': { active: false, text: 'Actionable insight: Faster contract times require immediate response capability. Consider pre-approved financing and ready offer templates to compete effectively.' },
+            'yield-compression-title': { active: false, text: 'Profitability concern: Cap rates declining from 5.81% to 5.69% month-over-month due to price appreciation outpacing rent growth.' },
+            'yield-compression-desc': { active: false, text: 'Risk management insight: Declining yields may require strategy adjustment. Monitor if cap rates approach minimum thresholds and consider raising financial criteria or expanding geography.' },
+            'supply-acceleration-title': { active: false, text: 'Market velocity analysis showing accelerating supply of qualified investment opportunities.' },
+            'supply-acceleration-desc': { active: false, text: 'Timing insight: 68% week-over-week increase in qualified opportunities indicates favorable market conditions for scaling acquisition activity.' },
+            'filter-bottleneck-title': { active: false, text: 'Analysis of strategy filter effectiveness showing where most properties are eliminated from consideration.' },
+            'filter-bottleneck-desc': { active: false, text: 'Strategic recommendation based on filter performance analysis. Expanding price criteria could significantly increase opportunity flow while maintaining quality.' },
+            'rental-yield-title': { active: false, text: 'Properties with price-to-rent ratios significantly below market average, indicating potential for superior cash flow returns.' },
+            'rental-yield-desc': { active: false, text: 'Investment opportunity identification: Properties priced below optimal yield ratios may offer immediate cash flow advantages and potential value appreciation.' },
+            'geographic-concentration-title': { active: false, text: 'Portfolio risk analysis showing concentration of opportunities in specific geographic areas.' },
+            'geographic-concentration-desc': { active: false, text: 'Risk management insight: High concentration in few zip codes creates geographic concentration risk. Diversifying across more areas reduces exposure to local market downturns.' },
+            'viewed-modeled-rate': { active: false, text: 'Conversion rate from initial property viewing to completion of financial model. Key operational efficiency metric for pipeline management.' },
+            'pipeline-insights-title': { active: false, text: 'Operational insights based on pipeline conversion rates and bottleneck analysis for process optimization.' },
+            'pipeline-bottleneck-title': { active: false, text: 'Analysis of pipeline conversion efficiency identifying the largest drop-off points in the property evaluation process.' },
+            'pipeline-bottleneck-desc': { active: false, text: 'Operational optimization insight: 46% of viewed properties never reach modeling stage. Improving this conversion rate could significantly increase deal flow.' },
+            
+            // Market Context (all disabled for MVP)
+            'market-context-title': { active: false, text: 'Broader Nashville MSA real estate market indicators providing context for strategy performance. Includes all property types and price ranges.' },
+            'market-context-meta': { active: false, text: 'Market-wide statistics for benchmarking strategy performance. Helps identify if strategy outperformance is due to selection criteria or overall market conditions.' },
+            'market-median-price-value': { active: false, text: 'Middle price when all Nashville MSA home sales are sorted by price. Includes condos, townhomes, and all single-family homes regardless of investment viability.' },
+            'market-median-price-label': { active: false, text: 'Benchmark for overall market pricing trends. Strategy median of $342k shows focus on lower-priced segment suitable for rental investment.' },
+            'market-median-price-change': { active: false, text: 'Overall market price appreciation of 4.1% month-over-month. Higher than strategy appreciation (2.5%), suggesting strategy properties lag broader market pricing.' },
+            'market-dom-value': { active: false, text: 'Median days from listing to contract for all Nashville MSA properties. Strategy properties average 14 days, showing 4-day competitive advantage.' },
+            'market-dom-label': { active: false, text: 'Market competitiveness indicator. Lower numbers indicate strong demand. Compare to strategy performance to gauge competitive positioning.' },
+            'market-dom-change': { active: false, text: 'Market-wide improvement of 3 days faster sales month-over-month. Indicates strengthening demand conditions across all segments.' },
+            'months-supply-value': { active: false, text: 'How many months it would take to sell all current inventory at current absorption rate. Formula: Current Inventory ÷ (Sales Volume ÷ 30 days).' },
+            'months-supply-label': { active: false, text: 'Supply-demand balance indicator. Under 3 months typically indicates seller\'s market. Under 2 months suggests very tight supply conditions.' },
+            'months-supply-change': { active: false, text: 'Supply tightening by 0.4 months indicates accelerating market conditions. Lower supply generally supports price appreciation and faster sales.' },
+            'absorption-rate-value': { active: false, text: 'Percentage of listed properties that go under contract each month. High absorption rates indicate strong buyer demand relative to available inventory.' },
+            'absorption-rate-label': { active: false, text: 'Demand strength metric. Above 60% typically indicates strong market conditions. Formula: Properties Under Contract ÷ Active Listings.' },
+            'absorption-rate-change': { active: false, text: 'Absorption rate up 8 percentage points month-over-month. Indicates strengthening buyer demand and suggests continued price pressure.' },
+            'new-listings-value': { active: false, text: 'New properties listed for sale today across Nashville MSA. Daily volume indicator for market supply replenishment rate.' },
+            'new-listings-label': { active: false, text: 'Daily supply indicator. Higher than average suggests inventory replenishment, though must be viewed relative to absorption rate for market balance.' },
+            'new-listings-change': { active: false, text: '23% above daily average indicates strong supply flow. Positive for buyers as more inventory choices, but absorption rate determines market impact.' },
+            'price-reductions-value': { active: false, text: 'Percentage of active listings that have reduced price from original asking price. Higher percentages indicate seller pricing pressure or weakening demand.' },
+            'price-reductions-label': { active: false, text: 'Seller pricing pressure indicator. Under 15% typically indicates strong market. Above 25% suggests buyers have more negotiating power.' },
+            'price-reductions-change': { active: false, text: 'Stable price reduction rate suggests consistent market conditions. No increase indicates continued seller pricing power despite supply increase.' },
+            
+            // Action Bar
+            'action-title': { active: false, text: 'Direct access to detailed property listings, strategy analysis tools, and data export functions for the current set of qualifying investment opportunities.' },
+            'view-properties-btn': { active: false, text: 'Navigate to detailed property list with filtering, sorting, and individual property analysis tools. Includes photos, financials, and neighborhood data.' },
+            'strategy-whatif-btn': { active: false, text: 'Interactive tool to model how changes to strategy criteria (price range, cap rate minimums, location constraints) would affect available property count and metrics.' },
+            'export-data-btn': { active: false, text: 'Download current property data, market metrics, and strategy performance in CSV or Excel format for external analysis or reporting.' },
+            
+            // Methodology Section
+            'methodology-title': { active: false, text: 'Detailed explanation of data sources, calculation methods, and analytical frameworks used in market analysis and strategy evaluation.' },
+            'methodology-meta': { active: false, text: 'Understanding calculation methods and data sources helps interpret results and make informed investment decisions.' },
+            'filter-process-title': { active: false, text: 'How raw MLS data is processed and filtered to identify investment opportunities matching strategy criteria.' },
+            'financial-calc-title': { active: false, text: 'How financial metrics are calculated using rental income estimates, expense ratios, and market comparables.' },
+            'market-timing-title': { active: false, text: 'How market timing metrics and trend analysis provide context for investment decisions.' },
+            'data-sources-title': { active: false, text: 'How data sources are integrated and quality-controlled to ensure analysis accuracy and reliability.' }
+        };
+
+        // Function to convert remaining long tooltip texts to keys
+        function convertRemainingTooltips() {
+            // Find all elements with long tooltip texts and convert them to keys
+            document.querySelectorAll('[data-tooltip]').forEach(element => {
+                const tooltipText = element.getAttribute('data-tooltip');
+                
+                // Skip if already using a key (short text without spaces or periods)
+                if (tooltipText.length < 50 && !tooltipText.includes(' ')) return;
+                
+                // Find matching key in tooltips object
+                const matchingKey = Object.keys(tooltips).find(key => {
+                    const tooltipData = tooltips[key];
+                    if (typeof tooltipData === 'object') {
+                        return tooltipData.text === tooltipText;
+                    } else {
+                        return tooltipData === tooltipText;
+                    }
+                });
+                
+                if (matchingKey) {
+                    element.setAttribute('data-tooltip', matchingKey);
+                }
+            });
+        }
+        
+        // Function to convert all tooltip entries to new format (run this in console to help migrate)
+        function convertTooltipsToNewFormat() {
+            const converted = {};
+            Object.keys(tooltips).forEach(key => {
+                const value = tooltips[key];
+                if (typeof value === 'string') {
+                    converted[key] = {
+                        active: true,
+                        text: value
+                    };
+                } else {
+                    converted[key] = value;
+                }
+            });
+            console.log('Converted tooltips object:', JSON.stringify(converted, null, 4));
+        }
+
+        // Tab switching functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetTab = this.dataset.tab;
+                
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                
+                // Initialize charts if switching to market tab
+                if (targetTab === 'market') {
+                    initMarketCharts();
+                }
+            });
+        });
+
+        // Pipeline functionality
+        let selectedCategory = null;
+
+        // Add click handlers to pipeline cards
+        document.querySelectorAll('.pipeline-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // If clicking the same card, deselect it
+                if (selectedCategory === category) {
+                    selectedCategory = null;
+                    this.classList.remove('selected');
+                    showAllRows();
+                } else {
+                    // Remove selection from all cards
+                    document.querySelectorAll('.pipeline-card').forEach(c => c.classList.remove('selected'));
+                    
+                    // Select this card
+                    selectedCategory = category;
+                    this.classList.add('selected');
+                    filterTableByCategory(category);
+                }
+            });
+        });
+
+        function filterTableByCategory(category) {
+            const tableRows = document.querySelectorAll('#metricsTableBody tr');
+            
+            tableRows.forEach(row => {
+                if (row.dataset.category === category) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Show relevant KPI section
+            showKpiSection(category);
+        }
+
+        function showAllRows() {
+            const tableRows = document.querySelectorAll('#metricsTableBody tr');
+            tableRows.forEach(row => {
+                row.style.display = '';
+            });
+            
+            // Hide all KPI sections
+            hideAllKpiSections();
+        }
+        
+        function showKpiSection(category) {
+            // Hide all KPI sections first
+            hideAllKpiSections();
+            
+            // Show the relevant KPI section
+            const kpiSection = document.getElementById(category + 'Kpis');
+            if (kpiSection) {
+                setTimeout(() => {
+                    kpiSection.classList.add('show');
+                }, 50);
+            }
+        }
+        
+        function hideAllKpiSections() {
+            const kpiSections = document.querySelectorAll('.kpi-section');
+            kpiSections.forEach(section => {
+                section.classList.remove('show');
+            });
+        }
+
+        // Tooltip functionality
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+        
+        // Function to initialize tooltips based on active status
+        function initializeTooltips() {
+            document.querySelectorAll('[data-tooltip]').forEach(element => {
+                const tooltipKey = element.dataset.tooltip;
+                const tooltipData = tooltips[tooltipKey];
+                
+                // Check if tooltip should be active
+                let isActive = false;
+                if (tooltipData) {
+                    if (typeof tooltipData === 'object') {
+                        isActive = tooltipData.active;
+                    } else {
+                        isActive = true; // Old format assumes active
+                    }
+                }
+                
+                // Add or remove has-tooltip class based on active status
+                if (isActive) {
+                    element.classList.add('has-tooltip');
+                } else {
+                    element.classList.remove('has-tooltip');
+                }
+            });
+        }
+        
+        // Initialize tooltips on page load
+        initializeTooltips();
+        
+        // Use event delegation for tooltips
+        document.addEventListener('mouseenter', function(e) {
+            if (e.target.classList.contains('has-tooltip')) {
+                const tooltipKey = e.target.dataset.tooltip;
+                const tooltipData = tooltips[tooltipKey];
+                
+                // Check if tooltip is active and get text
+                let tooltipText = null;
+                if (tooltipData) {
+                    if (typeof tooltipData === 'object') {
+                        // New format with active flag
+                        if (tooltipData.active) {
+                            tooltipText = tooltipData.text;
+                        }
+                    } else {
+                        // Old format - just text
+                        tooltipText = tooltipData;
+                    }
+                } else {
+                    // Fallback to key if not found
+                    tooltipText = tooltipKey;
+                }
+                
+                if (tooltipText) {
+                    tooltip.textContent = tooltipText;
+                    tooltip.classList.add('show');
+                    
+                    // Use a function to position tooltip that accounts for scroll
+                    positionTooltip(e.target, tooltip);
+                }
+            }
+        }, true);
+        
+        document.addEventListener('mouseleave', function(e) {
+            if (e.target.classList.contains('has-tooltip')) {
+                tooltip.classList.remove('show');
+            }
+        }, true);
+        
+        // Function to position tooltip that handles scrolling
+        function positionTooltip(element, tooltip) {
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Position tooltip above the element, centered
+            let left = rect.left + window.scrollX + (rect.width / 2) - (tooltipRect.width / 2);
+            let top = rect.top + window.scrollY - tooltipRect.height - 12;
+            
+            // Keep tooltip within viewport
+            if (left < 10) left = 10;
+            if (left + tooltipRect.width > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipRect.width - 10;
+            }
+            if (top < window.scrollY + 10) {
+                // If no room above, show below
+                top = rect.bottom + window.scrollY + 12;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip when scrolling
+        window.addEventListener('scroll', function() {
+            tooltip.classList.remove('show');
+        });
+
+        // Mock trend data for different metrics
+        const trendData = {
+            price: {
+                title: 'New Qualified Listings per Week',
+                subtitle: 'Weekly flow of properties meeting strategy criteria',
+                market: [18, 22, 19, 24, 28, 32],
+                formatValue: (value) => value + ' properties',
+                yMin: 15,
+                yMax: 35
+            },
+            pricetorent: {
+                title: 'Weekly Price-to-Rent Ratio Trend',
+                subtitle: 'Weekly price-to-rent analysis for strategy properties',
+                market: [138, 140, 142, 143, 144, 142],
+                formatValue: (value) => value + 'x',
+                yMin: 135,
+                yMax: 150
+            },
+            dom: {
+                title: 'Weekly Days on Market Trend',
+                subtitle: 'Weekly analysis of market competitiveness',
+                market: [21, 20, 19, 18, 18, 18],
+                formatValue: (value) => value + ' days',
+                yMin: 16,
+                yMax: 22
+            },
+            offerlist: {
+                title: 'Weekly Offer-to-List Trend',
+                subtitle: 'Weekly analysis of pricing power',
+                market: [96.1, 96.3, 96.8, 97.0, 97.2, 97.1],
+                formatValue: (value) => value.toFixed(1) + '%',
+                yMin: 95.5,
+                yMax: 97.5
+            }
+        };
+
+        // Initialize Market charts
+        function initMarketCharts() {
+            // Only initialize if the chart canvas exists and hasn't been initialized
+            const canvas = document.getElementById('opportunityTrend');
+            if (canvas && !canvas.chart) {
+                const ctx = canvas.getContext('2d');
+                canvas.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                        datasets: [{
+                            label: 'Weekly New Listings',
+                            data: trendData.price.market,
+                            borderColor: '#4f46e5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.05)',
+                            fill: true,
+                            tension: 0.3,
+                            pointBackgroundColor: '#4f46e5',
+                            pointBorderColor: '#4f46e5',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { 
+                                beginAtZero: false,
+                                min: trendData.price.yMin,
+                                max: trendData.price.yMax,
+                                grid: { color: '#f3f4f6' },
+                                ticks: { 
+                                    color: '#6b7280',
+                                    callback: function(value) {
+                                        return trendData.price.formatValue(value);
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: { color: '#f3f4f6' },
+                                ticks: { color: '#6b7280' }
+                            }
+                        },
+                        elements: {
+                            line: {
+                                borderWidth: 2
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Function to update chart based on selected metric
+        function updateChart(metricType) {
+            const canvas = document.getElementById('opportunityTrend');
+            if (canvas && canvas.chart) {
+                const data = trendData[metricType];
+                // Update chart title and subtitle
+                document.getElementById('chartTitle').querySelector('span').textContent = data.title;
+                document.getElementById('chartSubtitle').querySelector('span').textContent = data.subtitle;
+                // Update chart data and labels
+                canvas.chart.data.datasets[0].data = data.market;
+                canvas.chart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'];
+                // Update dataset label
+                canvas.chart.data.datasets[0].label = metricType === 'price' ? 'Weekly New Listings' : 'Market Trend';
+                // Update y-axis scale and formatting
+                canvas.chart.options.scales.y.min = data.yMin;
+                canvas.chart.options.scales.y.max = data.yMax;
+                canvas.chart.options.scales.y.ticks.callback = function(value) {
+                    return data.formatValue(value);
+                };
+                canvas.chart.update('active');
+            }
+        }
+
+        // Metric card selection functionality
+        const metricCards = document.querySelectorAll('.metric-card');
+        
+        metricCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selected class from all cards
+                metricCards.forEach(c => c.classList.remove('selected'));
+                
+                // Add selected class to clicked card
+                card.classList.add('selected');
+                
+                // Update chart based on selected metric
+                const metricType = card.dataset.metric;
+                updateChart(metricType);
+            });
+        });
+
+        // Initialize charts for the market tab since it's active by default
+        initMarketCharts();
+        
+        // Convert remaining tooltips to use dictionary keys
+        convertRemainingTooltips();
+    </script>
+</body>
+</html>
