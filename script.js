@@ -95,6 +95,16 @@
                 if (targetTab === 'market') {
                     initMarketCharts();
                 }
+                
+                // Auto-select underwriting pipeline card when switching to pipeline tab
+                if (targetTab === 'pipeline') {
+                    // Find the underwriting pipeline card and trigger its click
+                    const underwritingCard = document.querySelector('.pipeline-card[data-category="underwriting"]');
+                    if (underwritingCard) {
+                        // Trigger the card selection programmatically
+                        underwritingCard.click();
+                    }
+                }
             });
         });
 
