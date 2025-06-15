@@ -373,19 +373,19 @@
                         <div class="kpi-change positive">-1.3 days vs last month</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">$342k</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Average listing price of properties currently in the underwriting pipeline.">Avg Property Value</div>
+                        <div class="kpi-value">$345k</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average listing price of properties that have completed financial modeling (83 properties with full analysis).">Avg Property Value (Modeled)</div>
                         <div class="kpi-change positive">+2.8% vs last month</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-value">5.84%</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Average capitalization rate (annual rental income ÷ property price). Key profitability metric.">Avg Cap Rate</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average capitalization rate for properties with completed financial models (83 properties). Shows investment quality of analyzed deals.">Avg Cap Rate (Modeled)</div>
                         <div class="kpi-change negative">-0.15% vs last month</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">23%</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Percentage of pipeline consisting of higher-value properties (over $400k).">High-Value Properties (>$400k)</div>
-                        <div class="kpi-change positive">+8% vs last month</div>
+                        <div class="kpi-value">42%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Percentage of modeled properties that analysts choose to save for further consideration (35 saved ÷ 83 modeled).">Save Rate (from Modeled)</div>
+                        <div class="kpi-change positive">+3% vs last month</div>
                     </div>
                 </div>
             </div>
@@ -412,9 +412,9 @@
                         <div class="kpi-change positive">-2.1 days vs market avg</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">8.3%</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Percentage of offers accepted so far this month. Excludes still-pending offers.">Month-to-Date Acceptance Rate</div>
-                        <div class="kpi-change negative">-2.1% vs last month</div>
+                        <div class="kpi-value has-tooltip" data-tooltip="acceptance-rate-calculation">40%</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Percentage of resolved offers that were accepted (2 accepted ÷ 5 total resolved). Excludes pending offers awaiting response.">Acceptance Rate (Resolved)</div>
+                        <div class="kpi-change positive">+12% vs last month</div>
                     </div>
                 </div>
             </div>
@@ -431,18 +431,18 @@
                         <div class="kpi-change positive">+100% vs last month</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">28 days</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Average time from contract signing to closing completion.">Avg Days to Close</div>
+                        <div class="kpi-value has-tooltip" data-tooltip="days-to-close-calculation">28 days</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average time from contract signing to closing completion. Based only on properties that successfully closed this month.">Avg Days to Close (Closed)</div>
                         <div class="kpi-change positive">-5 days vs market avg</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">$2.1k</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Average closing costs per transaction (title, attorney fees, inspections, etc). Excludes purchase price.">Avg Closing Costs</div>
+                        <div class="kpi-value has-tooltip" data-tooltip="closing-costs-calculation">$2.1k</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Average closing costs per transaction (title, attorney fees, inspections, etc). Based only on properties that successfully closed this month. Excludes purchase price.">Avg Closing Costs (Closed)</div>
                         <div class="kpi-change neutral">Within budget</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-value">0</div>
-                        <div class="kpi-label has-tooltip" data-tooltip="Transactions that failed to close after going under contract due to inspections, financing, etc.">Fall-throughs This Month</div>
+                        <div class="kpi-value has-tooltip" data-tooltip="fall-throughs-calculation">0</div>
+                        <div class="kpi-label has-tooltip" data-tooltip="Properties that were under contract but failed to close this month due to inspections, financing issues, appraisal problems, etc.">Fall-throughs This Month</div>
                         <div class="kpi-change positive">0 vs 2 last month</div>
                     </div>
                 </div>
@@ -466,6 +466,9 @@
                         </tr>
                     </thead>
                     <tbody id="metricsTableBody">
+                        <tr class="subheader-row">
+                            <td colspan="8" class="subheader">Underwriting</td>
+                        </tr>
                         <tr data-category="underwriting" data-subcategory="viewed">
                             <td>Viewed</td>
                             <td>155</td>
@@ -516,6 +519,9 @@
                             <td>2015</td>
                             <td>1,650</td>
                         </tr>
+                        <tr class="subheader-row">
+                            <td colspan="8" class="subheader">Offers</td>
+                        </tr>
                         <tr data-category="offers" data-subcategory="submitted">
                             <td>Submitted</td>
                             <td>19</td>
@@ -555,6 +561,9 @@
                             <td>1.7</td>
                             <td>1975</td>
                             <td>1,425</td>
+                        </tr>
+                        <tr class="subheader-row">
+                            <td colspan="8" class="subheader">Transactions</td>
                         </tr>
                         <tr data-category="transactions" data-subcategory="under-contract">
                             <td>Under Contract</td>

@@ -15,6 +15,22 @@
             'cap-rate-title': { 
                 active: true, 
                 text: 'Median capitalization rate across strategy properties. Cap rate = (Annual Rental Income - Operating Expenses) ÷ Purchase Price. Key profitability metric for rental properties.' 
+            },
+            'acceptance-rate-calculation': {
+                active: true,
+                text: 'Calculation: 2 accepted offers ÷ 5 resolved offers (2 accepted + 3 rejected) = 40%. The 14 offers still awaiting response are excluded from this calculation since they haven\'t been resolved yet.'
+            },
+            'days-to-close-calculation': {
+                active: true,
+                text: 'Based on 2 properties that successfully closed this month. If no properties closed this month, this would show "N/A" instead of an average.'
+            },
+            'closing-costs-calculation': {
+                active: true,
+                text: 'Based on 2 properties that successfully closed this month. Includes title fees, attorney fees, inspections, etc. If no properties closed this month, this would show "N/A" instead of an average.'
+            },
+            'fall-throughs-calculation': {
+                active: true,
+                text: '0 properties fell through this month. Count includes properties that were under contract but failed to close due to inspections, financing, appraisal issues, or other problems.'
             }
         };
 
