@@ -57,7 +57,7 @@
         <a href="#" class="nav-tab" data-tab="overview">Overview</a>
         <a href="#" class="nav-tab active" data-tab="market">Market</a>
         <a href="#" class="nav-tab" data-tab="pipeline">Pipeline</a>
-        <a href="#" class="nav-tab" data-tab="portfolio" style="display: none;">Portfolio</a>
+        <a href="#" class="nav-tab" data-tab="portfolio">Portfolio</a>
     </div>
 
     <div class="main-content">
@@ -156,15 +156,15 @@
             <div class="metrics-grid">
                 <div class="metric-card selected" data-metric="price">
                     <div class="metric-header">
-                        <div class="metric-title"><span class="has-tooltip" data-tooltip="median-price-title">Median List Price</span></div>
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="median-price-title">Avg List Price</span></div>
                         <div class="metric-scope"><span class="has-tooltip" data-tooltip="median-price-scope">Strategy properties</span></div>
                     </div>
                     <div class="metric-value"><span class="has-tooltip" data-tooltip="median-price-value">$342k</span></div>
-                    <div class="metric-change negative"><span class="has-tooltip" data-tooltip="median-price-change">-29% vs market median</span></div>
+                    <div class="metric-change negative"><span class="has-tooltip" data-tooltip="median-price-change">-29% vs market avg</span></div>
                 </div>
                 <div class="metric-card" data-metric="grossyield">
                     <div class="metric-header">
-                        <div class="metric-title"><span class="has-tooltip" data-tooltip="gross-yield-title">Median Gross Yield</span></div>
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="gross-yield-title">Avg Gross Yield</span></div>
                         <div class="metric-scope"><span class="has-tooltip" data-tooltip="gross-yield-scope">Strategy properties</span></div>
                     </div>
                     <div class="metric-value"><span class="has-tooltip" data-tooltip="gross-yield-value">7.23%</span></div>
@@ -172,7 +172,7 @@
                 </div>
                 <div class="metric-card" data-metric="dom">
                     <div class="metric-header">
-                        <div class="metric-title"><span class="has-tooltip" data-tooltip="days-market-title">Median Days on Market</span></div>
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="days-market-title">Avg Days on Market</span></div>
                         <div class="metric-scope"><span class="has-tooltip" data-tooltip="days-market-scope">Strategy properties</span></div>
                     </div>
                     <div class="metric-value"><span class="has-tooltip" data-tooltip="days-market-value">14 days</span></div>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="metric-card" data-metric="rentyield">
                     <div class="metric-header">
-                        <div class="metric-title"><span class="has-tooltip" data-tooltip="rent-yield-title">Est. Monthly Rent Yield</span></div>
+                        <div class="metric-title"><span class="has-tooltip" data-tooltip="rent-yield-title">Avg Monthly Rent Yield</span></div>
                         <div class="metric-scope"><span class="has-tooltip" data-tooltip="rent-yield-scope">Strategy properties</span></div>
                     </div>
                     <div class="metric-value"><span class="has-tooltip" data-tooltip="rent-yield-value">0.62%</span></div>
@@ -269,39 +269,14 @@
 
             <!-- Action Bar -->
             <div class="action-bar">
-                <div class="action-title"><span class="has-tooltip" data-tooltip="Direct access to detailed property listings, strategy analysis tools, and data export functions for the current set of qualifying investment opportunities.">View and analyze your 485 available properties</span></div>
+                <div class="action-title"><span class="has-tooltip" data-tooltip="Direct access to detailed property listings, strategy analysis tools, and bulk analysis functions for the current set of qualifying investment opportunities.">View and analyze your 485 available properties</span></div>
                 <div class="action-buttons">
                     <a href="#" class="btn btn-primary"><span class="has-tooltip" data-tooltip="Navigate to detailed property list with filtering, sorting, and individual property analysis tools. Includes photos, financials, and neighborhood data.">View Properties</span></a>
-                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Interactive tool to model how changes to strategy criteria (price range, cap rate minimums, location constraints) would affect available property count and metrics.">Strategy What-If</span></a>
-                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Download current property data, market metrics, and strategy performance in CSV or Excel format for external analysis or reporting.">Export Data</span></a>
+                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Interactive tool to model how changes to strategy criteria (price range, cap rate minimums, location constraints) would affect available property count and metrics.">What-If Tool</span></a>
+                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Analyze multiple properties simultaneously with our bulk analysis tool to compare investment metrics, cash flows, and returns across your entire opportunity set.">Bulk Analyze</span></a>
                 </div>
             </div>
 
-            <!-- Methodology Section -->
-            <div class="market-context" style="margin-top: 32px;">
-                <div class="section-header" style="padding: 0 0 20px 0;">
-                    <h3 class="section-title"><span class="has-tooltip" data-tooltip="Detailed explanation of data sources, calculation methods, and analytical frameworks used in market analysis and strategy evaluation.">Analysis Methodology</span></h3>
-                    <div class="section-meta"><span class="has-tooltip" data-tooltip="Understanding calculation methods and data sources helps interpret results and make informed investment decisions."></span></div>
-                </div>
-                <div style="padding: 24px; font-size: 14px; line-height: 1.6; color: #374151;">
-                    <div style="margin-bottom: 24px;">
-                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Strategy Filter Process</h4>
-                        <p style="margin-bottom: 12px;">Properties are filtered through three sequential stages: <strong>Property Filters</strong> (type, condition, size), <strong>Location Filters</strong> (geography, schools, neighborhoods), and <strong>Financial Filters</strong> (profitability thresholds).</p>
-                        <p>Current funnel shows 3.8% overall selectivity, with financial criteria being the most restrictive stage.</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Key Financial Metrics</h4>
-                        <p style="margin-bottom: 12px;"><strong>Cap Rate</strong> = (Annual Rental Income - Operating Expenses) ÷ Purchase Price. Primary measure of investment profitability.</p>
-                        <p><strong>Days on Market</strong> and <strong>Offer-to-List Ratio</strong> indicate market competitiveness and pricing power.</p>
-                    </div>
-                    
-                    <div>
-                        <h4 style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px;">Data Sources</h4>
-                        <p>Real-time MLS data, rental market APIs, and public data sources. Analysis updated continuously during market hours.</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Pipeline Tab -->
@@ -620,7 +595,20 @@
         <div class="tab-content" id="portfolio">
             <div class="placeholder-content">
                 <h1 class="placeholder-title">Portfolio Dashboard</h1>
-                <p class="placeholder-subtitle">Coming soon - Owned property performance, cash flow tracking, and portfolio analytics</p>
+                <p class="placeholder-subtitle">Future phase - Owned property performance, cash flow tracking, and portfolio analytics will be implemented in a later version</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for property drill-down -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Property Details</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-placeholder">We will display the drill-down properties here with detailed information including property photos, financial metrics, location data, and investment analysis.</p>
             </div>
         </div>
     </div>

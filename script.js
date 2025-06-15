@@ -408,3 +408,58 @@
         
         // Convert remaining tooltips to use dictionary keys
         convertRemainingTooltips();
+
+        // Modal functionality
+        const modal = document.getElementById('propertyModal');
+        const modalTitle = document.querySelector('.modal-title');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Add click handlers to funnel stage cards
+        document.querySelectorAll('.funnel-stage-card').forEach(cardElement => {
+            cardElement.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent any parent click handlers from firing
+                const numberElement = this.querySelector('.funnel-stage-number');
+                const labelElement = this.querySelector('.funnel-stage-label');
+                
+                if (numberElement) {
+                    const count = numberElement.textContent.trim();
+                    const stageLabel = labelElement ? labelElement.textContent.trim() : 'Properties';
+                    
+                    modalTitle.textContent = `${count} ${stageLabel}`;
+                    showModal();
+                }
+            });
+        });
+
+        // Modal close functionality
+        modalClose.addEventListener('click', hideModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                hideModal();
+            }
+        });
+
+        function showModal() {
+            modal.style.display = 'flex';
+            // Force a reflow to ensure display change takes effect
+            modal.offsetHeight;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent body scroll
+        }
+
+        function hideModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Restore body scroll
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300); // Match transition duration
+        }
