@@ -105,6 +105,21 @@
                         underwritingCard.click();
                     }
                 }
+                
+                // Handle date controls visibility based on active tab
+                const segmentedControl = document.querySelector('.segmented-control');
+                const dateRangePicker = document.querySelector('.date-range-picker');
+                
+                if (targetTab === 'pipeline') {
+                    // Hide current/historical toggle on pipeline tab
+                    segmentedControl.style.display = 'none';
+                    // Ensure date picker is visible for historical data selection
+                    dateRangePicker.style.display = 'block';
+                } else {
+                    // Show toggle on other tabs
+                    segmentedControl.style.display = 'flex';
+                    dateRangePicker.style.display = 'block';
+                }
             });
         });
 
