@@ -76,6 +76,22 @@
             console.log('Converted tooltips object:', JSON.stringify(converted, null, 4));
         }
 
+        // Initialize date controls based on active tab on page load
+        function initializeDateControls() {
+            const activeTab = document.querySelector('.nav-tab.active');
+            const targetTab = activeTab ? activeTab.dataset.tab : 'market';
+            const segmentedControl = document.querySelector('.segmented-control');
+            const dateRangePicker = document.querySelector('.date-range-picker');
+            
+            if (targetTab === 'pipeline') {
+                segmentedControl.style.display = 'none';
+                dateRangePicker.style.display = 'block';
+            } else {
+                segmentedControl.style.display = 'flex';
+                dateRangePicker.style.display = 'block';
+            }
+        }
+
         // Tab switching functionality
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', function(e) {
@@ -446,6 +462,9 @@
 
         // Initialize charts for the market tab since it's active by default
         initMarketCharts();
+        
+        // Initialize date controls based on active tab on page load
+        initializeDateControls();
         
         // Convert remaining tooltips to use dictionary keys
         convertRemainingTooltips();
