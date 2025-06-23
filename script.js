@@ -94,13 +94,19 @@
             const targetTab = activeTab ? activeTab.dataset.tab : 'market';
             const segmentedControl = document.querySelector('.segmented-control');
             const dateRangePicker = document.querySelector('.date-range-picker');
+            const currentOption = document.querySelector('.segment-option[data-mode="current"]');
             
             if (targetTab === 'pipeline') {
                 segmentedControl.style.display = 'none';
                 dateRangePicker.style.display = 'block';
             } else {
                 segmentedControl.style.display = 'flex';
-                dateRangePicker.style.display = 'block';
+                // Hide date picker for current view by default on market tab
+                if (currentOption && currentOption.classList.contains('active')) {
+                    dateRangePicker.style.display = 'none';
+                } else {
+                    dateRangePicker.style.display = 'block';
+                }
             }
         }
 
@@ -137,6 +143,7 @@
                 // Handle date controls visibility based on active tab
                 const segmentedControl = document.querySelector('.segmented-control');
                 const dateRangePicker = document.querySelector('.date-range-picker');
+                const currentOption = document.querySelector('.segment-option[data-mode="current"]');
                 
                 if (targetTab === 'pipeline') {
                     // Hide current/historical toggle on pipeline tab
@@ -146,7 +153,12 @@
                 } else {
                     // Show toggle on other tabs
                     segmentedControl.style.display = 'flex';
-                    dateRangePicker.style.display = 'block';
+                    // Check current mode and show/hide date picker accordingly
+                    if (currentOption && currentOption.classList.contains('active')) {
+                        dateRangePicker.style.display = 'none';
+                    } else {
+                        dateRangePicker.style.display = 'block';
+                    }
                 }
             });
         });
@@ -165,9 +177,9 @@
                 
                 // Show/hide date range picker based on mode
                 if (mode === 'historical') {
-                    dateRangePicker.classList.add('show');
+                    dateRangePicker.style.display = 'block';
                 } else {
-                    dateRangePicker.classList.remove('show');
+                    dateRangePicker.style.display = 'none';
                 }
             });
         });
