@@ -31,6 +31,18 @@
             'fall-throughs-calculation': {
                 active: true,
                 text: '0 properties fell through this month. Count includes properties that were under contract but failed to close due to inspections, financing, appraisal issues, or other problems.'
+            },
+            'cta-view-opportunities': {
+                active: true,
+                text: 'View all properties that match your strategy.'
+            },
+            'cta-what-if-tool': {
+                active: true,
+                text: 'Test different strategy criteria without affecting your saved settings. Adjust price ranges, cap rates, or location filters and see real-time changes to your opportunity count and metrics.'
+            },
+            'cta-bulk-analyze': {
+                active: true,
+                text: 'Compare multiple properties side-by-side to find your best investment opportunities.'
             }
         };
 

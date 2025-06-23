@@ -154,10 +154,14 @@
             <div class="strategy-cta">
                 <div class="cta-content">
                     <div class="cta-text">
-                        <h3 class="cta-title">Want to see more opportunities?</h3>
-                        <p class="cta-description">Test different strategies, adjust your criteria, and discover how small changes can unlock hundreds more properties.</p>
+                        <h3 class="cta-title">Dive Deeper?</h3>
+                        <p class="cta-description">Explore your opportunities, experiment with strategy adjustments in a testing playground, or analyze multiple investments at once.</p>
                     </div>
-                    <a href="#" class="cta-button">Try What-If Tool</a>
+                    <div class="cta-buttons">
+                        <a href="#" class="cta-button"><span class="has-tooltip" data-tooltip="cta-view-opportunities">View Opportunities</span></a>
+                        <a href="#" class="cta-button"><span class="has-tooltip" data-tooltip="cta-what-if-tool">What-If Tool</span></a>
+                        <a href="#" class="cta-button"><span class="has-tooltip" data-tooltip="cta-bulk-analyze">Bulk Analyze</span></a>
+                    </div>
                 </div>
             </div>
 
@@ -202,89 +206,78 @@
                 <div class="chart-container">
                     <div class="chart-header">
                         <div class="chart-title" id="chartTitle"><span class="has-tooltip" data-tooltip="chart-title">Market Avg List Price Trend</span></div>
-                        <div class="chart-subtitle" id="chartSubtitle"><span class="has-tooltip" data-tooltip="chart-subtitle">Nashville MSA overall market movement</span></div>
+                        <div class="chart-subtitle" id="chartSubtitle"><span class="has-tooltip" data-tooltip="chart-subtitle">Nashville MSA market trends</span></div>
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="opportunityTrend"></canvas>
                     </div>
                 </div>
 
-                <div class="insights-panel">
+                <div class="market-context-panel">
                     <div class="section-header" style="padding: 0 0 16px 0;">
-                        <h3 class="section-title" style="font-size: 16px;"><span class="has-tooltip" data-tooltip="AI-generated insights based on current market data patterns, trend analysis, and strategy performance metrics.">Key Insights</span></h3>
+                        <h3 class="section-title" style="font-size: 16px;"><span class="has-tooltip" data-tooltip="Broader Nashville MSA real estate market indicators providing context for strategy performance. Includes all property types and price ranges.">Market Context</span></h3>
+                        <div class="section-meta"><span class="has-tooltip" data-tooltip="Market-wide statistics for benchmarking strategy performance. Helps identify if strategy outperformance is due to selection criteria or overall market conditions.">Nashville MSA</span></div>
                     </div>
-                    <div class="insight-item">
-                        <div class="insight-title"><span class="has-tooltip" data-tooltip="Location constraints are the second-largest filter elimination factor. Analysis: 9,240 → 4,825 properties (47.8% elimination rate).">Expand Your Location Criteria</span></div>
-                        <div class="insight-description"><span class="has-tooltip" data-tooltip="Recommendation based on filter analysis showing location criteria eliminating nearly half of qualifying properties. Adjacent zip codes may offer similar characteristics with expanded supply.">Location filters are eliminating 47% of potential properties. Test expanding to nearby areas to increase your opportunity count.</span></div>
-                        <a href="#" class="insight-action">Go to What-If Tool</a>
-                    </div>
-                    <div class="insight-item">
-                        <div class="insight-title"><span class="has-tooltip" data-tooltip="Competitive market indicator: 14 days to contract for strategy properties vs 18 days market average. Suggests high demand in your target segment.">Set Up Instant Alerts</span></div>
-                        <div class="insight-description"><span class="has-tooltip" data-tooltip="Actionable insight: Faster contract times require immediate response capability. Consider pre-approved financing and ready offer templates to compete effectively.">Properties go under contract 4 days faster than market average. You need instant notifications to compete effectively.</span></div>
-                        <a href="#" class="insight-action">Setup Alerts</a>
-                    </div>
-                    <div class="insight-item">
-                        <div class="insight-title"><span class="has-tooltip" data-tooltip="Your strategy properties show 7.23% gross yield vs 6.4% market average, indicating strong rental income potential relative to purchase prices.">Target Higher Yields</span></div>
-                        <div class="insight-description"><span class="has-tooltip" data-tooltip="Strategy insight: Your filters are identifying properties with above-market rental yields. Consider tightening yield criteria to focus on the highest-performing opportunities.">Your properties average 0.8% higher gross yields than market. Consider raising your minimum yield threshold to focus on top performers.</span></div>
-                        <a href="#" class="insight-action">Adjust Strategy</a>
-                    </div>
-                    <div class="insight-item">
-                        <div class="insight-title"><span class="has-tooltip" data-tooltip="32 new properties passed all your strategy filters this week, including 8 with above-average gross yields. These fresh strategy matches need immediate review in this competitive market.">Fresh Strategy Matches Available</span></div>
-                        <div class="insight-description"><span class="has-tooltip" data-tooltip="Strategy alert: 32 new properties qualified through your full filter process this week. 8 show above-average yields. Fresh strategy fits get competitive quickly.">32 new properties passed your complete strategy filter this week. 8 show exceptional yields - review these high-quality matches first.</span></div>
-                        <a href="#" class="insight-action">See Strategy Matches</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Market Context -->
-            <div class="market-context">
-                <div class="section-header" style="padding: 0 0 20px 0;">
-                    <h3 class="section-title"><span class="has-tooltip" data-tooltip="Broader Nashville MSA real estate market indicators providing context for strategy performance. Includes all property types and price ranges.">Nashville MSA Market Context</span></h3>
-                    <div class="section-meta"><span class="has-tooltip" data-tooltip="Market-wide statistics for benchmarking strategy performance. Helps identify if strategy outperformance is due to selection criteria or overall market conditions."></span></div>
-                </div>
-                <div class="context-grid">
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="Middle price when all Nashville MSA home sales are sorted by price. Includes condos, townhomes, and all single-family homes regardless of investment viability.">$485k</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Benchmark for overall market pricing trends. Strategy median of $342k shows focus on lower-priced segment suitable for rental investment.">Market Median Price</span></div>
-                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Overall market price appreciation of 4.1% month-over-month. Higher than strategy appreciation (2.5%), suggesting strategy properties lag broader market pricing.">+4.1% MoM</span></div>
-                    </div>
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="Median days from listing to contract for all Nashville MSA properties. Strategy properties average 14 days, showing 4-day competitive advantage.">18 days</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Market competitiveness indicator. Lower numbers indicate strong demand. Compare to strategy performance to gauge competitive positioning.">Market Median DOM</span></div>
-                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Market-wide improvement of 3 days faster sales month-over-month. Indicates strengthening demand conditions across all segments.">-3 days MoM</span></div>
-                    </div>
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="How many months it would take to sell all current inventory at current absorption rate. Formula: Current Inventory ÷ (Sales Volume ÷ 30 days).">2.3</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Supply-demand balance indicator. Under 3 months typically indicates seller's market. Under 2 months suggests very tight supply conditions.">Months Supply</span></div>
-                        <div class="context-change negative"><span class="has-tooltip" data-tooltip="Supply tightening by 0.4 months indicates accelerating market conditions. Lower supply generally supports price appreciation and faster sales.">-0.4 MoM</span></div>
-                    </div>
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of listed properties that go under contract each month. High absorption rates indicate strong buyer demand relative to available inventory.">67%</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Demand strength metric. Above 60% typically indicates strong market conditions. Formula: Properties Under Contract ÷ Active Listings.">Absorption Rate</span></div>
-                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="Absorption rate up 8 percentage points month-over-month. Indicates strengthening buyer demand and suggests continued price pressure.">+8% MoM</span></div>
-                    </div>
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="New properties listed for sale today across Nashville MSA. Daily volume indicator for market supply replenishment rate.">156</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Daily supply indicator. Higher than average suggests inventory replenishment, though must be viewed relative to absorption rate for market balance.">New Listings Today</span></div>
-                        <div class="context-change positive"><span class="has-tooltip" data-tooltip="23% above daily average indicates strong supply flow. Positive for buyers as more inventory choices, but absorption rate determines market impact.">+23% vs avg</span></div>
-                    </div>
-                    <div class="context-metric">
-                        <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of active listings that have reduced price from original asking price. Higher percentages indicate seller pricing pressure or weakening demand.">12%</span></div>
-                        <div class="context-label"><span class="has-tooltip" data-tooltip="Seller pricing pressure indicator. Under 15% typically indicates strong market. Above 25% suggests buyers have more negotiating power.">Price Reductions</span></div>
-                        <div class="context-change neutral"><span class="has-tooltip" data-tooltip="Stable price reduction rate suggests consistent market conditions. No increase indicates continued seller pricing power despite supply increase.">No change MoM</span></div>
+                    <div class="context-list">
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="Middle price when all Nashville MSA home sales are sorted by price. Includes condos, townhomes, and all single-family homes regardless of investment viability.">$485k</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Benchmark for overall market pricing trends. Strategy median of $342k shows focus on lower-priced segment suitable for rental investment.">Market Median Price</span></div>
+                                </div>
+                                <div class="context-change positive"><span class="has-tooltip" data-tooltip="Overall market price appreciation of 4.1% month-over-month. Higher than strategy appreciation (2.5%), suggesting strategy properties lag broader market pricing.">+4.1% MoM</span></div>
+                            </div>
+                        </div>
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="Median days from listing to contract for all Nashville MSA properties. Strategy properties average 14 days, showing 4-day competitive advantage.">18 days</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Market competitiveness indicator. Lower numbers indicate strong demand. Compare to strategy performance to gauge competitive positioning.">Market Median DOM</span></div>
+                                </div>
+                                <div class="context-change positive"><span class="has-tooltip" data-tooltip="Market-wide improvement of 3 days faster sales month-over-month. Indicates strengthening demand conditions across all segments.">-3 days MoM</span></div>
+                            </div>
+                        </div>
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="How many months it would take to sell all current inventory at current absorption rate. Formula: Current Inventory ÷ (Sales Volume ÷ 30 days).">2.3</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Supply-demand balance indicator. Under 3 months typically indicates seller's market. Under 2 months suggests very tight supply conditions.">Months Supply</span></div>
+                                </div>
+                                <div class="context-change negative"><span class="has-tooltip" data-tooltip="Supply tightening by 0.4 months indicates accelerating market conditions. Lower supply generally supports price appreciation and faster sales.">-0.4 MoM</span></div>
+                            </div>
+                        </div>
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of listed properties that go under contract each month. High absorption rates indicate strong buyer demand relative to available inventory.">67%</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Demand strength metric. Above 60% typically indicates strong market conditions. Formula: Properties Under Contract ÷ Active Listings.">Absorption Rate</span></div>
+                                </div>
+                                <div class="context-change positive"><span class="has-tooltip" data-tooltip="Absorption rate up 8 percentage points month-over-month. Indicates strengthening buyer demand and suggests continued price pressure.">+8% MoM</span></div>
+                            </div>
+                        </div>
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="New properties listed for sale today across Nashville MSA. Daily volume indicator for market supply replenishment rate.">156</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Daily supply indicator. Higher than average suggests inventory replenishment, though must be viewed relative to absorption rate for market balance.">New Listings Today</span></div>
+                                </div>
+                                <div class="context-change positive"><span class="has-tooltip" data-tooltip="23% above daily average indicates strong supply flow. Positive for buyers as more inventory choices, but absorption rate determines market impact.">+23% vs avg</span></div>
+                            </div>
+                        </div>
+                        <div class="context-metric-vertical">
+                            <div class="context-metric-content">
+                                <div class="context-value-label">
+                                    <div class="context-value"><span class="has-tooltip" data-tooltip="Percentage of active listings that have reduced price from original asking price. Higher percentages indicate seller pricing pressure or weakening demand.">12%</span></div>
+                                    <div class="context-label"><span class="has-tooltip" data-tooltip="Seller pricing pressure indicator. Under 15% typically indicates strong market. Above 25% suggests buyers have more negotiating power.">Price Reductions</span></div>
+                                </div>
+                                <div class="context-change neutral"><span class="has-tooltip" data-tooltip="Stable price reduction rate suggests consistent market conditions. No increase indicates continued seller pricing power despite supply increase.">No change MoM</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Bar -->
-            <div class="action-bar">
-                <div class="action-title"><span class="has-tooltip" data-tooltip="Direct access to detailed property listings, strategy analysis tools, and bulk analysis functions for the current set of qualifying investment opportunities.">View and analyze your 485 available properties</span></div>
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary"><span class="has-tooltip" data-tooltip="Navigate to detailed property list with filtering, sorting, and individual property analysis tools. Includes photos, financials, and neighborhood data.">View Properties</span></a>
-                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Interactive tool to model how changes to strategy criteria (price range, cap rate minimums, location constraints) would affect available property count and metrics.">What-If Tool</span></a>
-                    <a href="#" class="btn btn-secondary"><span class="has-tooltip" data-tooltip="Analyze multiple properties simultaneously with our bulk analysis tool to compare investment metrics, cash flows, and returns across your entire opportunity set.">Bulk Analyze</span></a>
-                </div>
-            </div>
+
 
         </div>
 
