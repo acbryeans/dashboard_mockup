@@ -4,7 +4,7 @@ A comprehensive real estate investment analytics platform showcasing property ma
 
 ## 🚀 Live Demo
 
-Visit the dashboard: [https://USERNAME.github.io/REPOSITORY_NAME/](https://USERNAME.github.io/REPOSITORY_NAME/)
+Visit the dashboard: https://acbryeans.github.io/dashboard_mockup/
 
 ## 📊 Features
 
