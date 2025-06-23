@@ -535,3 +535,25 @@
                 modal.style.display = 'none';
             }, 300); // Match transition duration
         }
+
+        // Funnel stage hover effects - highlight only the immediately preceding arrow
+        document.addEventListener('DOMContentLoaded', function() {
+            const funnelStages = document.querySelectorAll('.funnel-stage');
+            const funnelArrows = document.querySelectorAll('.funnel-arrow');
+            
+            funnelStages.forEach((stage, index) => {
+                stage.addEventListener('mouseenter', function() {
+                    // Only highlight the immediately preceding arrow (index - 1)
+                    if (index > 0 && funnelArrows[index - 1]) {
+                        funnelArrows[index - 1].classList.add('arrow-highlighted');
+                    }
+                });
+                
+                stage.addEventListener('mouseleave', function() {
+                    // Remove highlight from all arrows
+                    funnelArrows.forEach(arrow => {
+                        arrow.classList.remove('arrow-highlighted');
+                    });
+                });
+            });
+        });
